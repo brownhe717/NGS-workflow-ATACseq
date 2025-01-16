@@ -28,6 +28,8 @@ rule macs2_call_atac_peaks_merged:
                  )
 	log: 
 		"logs/macs2/macs2_call_atac_peaks_merged_{experiment}.log"
+	conda:
+		"../envs/macs2_env.yaml"
 	params: config["params"]["macs2_call_atac_peaks_merged"]
 	wrapper:
 		"v1.1.0/bio/macs2/callpeak"
@@ -44,6 +46,8 @@ rule macs2_call_atac_peaks_merged_by_sample:
                  )
 	log: 
 		"logs/macs2/callpeak_merged_bySample_{sample_group}.log"
+	conda:
+		"../envs/macs2_env.yaml"
 	params: 
 		config["params"]["macs2_call_atac_peaks_merged"],
 	wrapper:
