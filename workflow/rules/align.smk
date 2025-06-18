@@ -74,4 +74,4 @@ rule samtools_index_aligned:
     threads:  # Samtools takes additional threads through its option -@
         4     # This value - 1 will be sent to -@
     wrapper:
-        "v1.1.0/bio/samtools/index"
+        "v1.5.0/bio/samtools/index"
