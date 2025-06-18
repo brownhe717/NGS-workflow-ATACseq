@@ -4,3 +4,6 @@ channels:
   - defaults
 dependencies:
   - samtools=1.14
+  - libgcc=14.2.0
+  - libstdcxx=14.2.0
+  - libgomp=14.2.0
