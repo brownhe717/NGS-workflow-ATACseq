@@ -35,7 +35,7 @@ if config["filter_chroms"]:
 		threads:  # Samtools takes additional threads through its option -@
 			4     # This value - 1 will be sent to -@
 		wrapper:
-			"v1.5.0/bio/samtools/index"
+			"v1.1.0/bio/samtools/index"
 	
 	rule samtools_idxstats_unireads:
 		input:
@@ -87,7 +87,7 @@ rule samtools_index_filtered:
     threads:  # Samtools takes additional threads through its option -@
         4     # This value - 1 will be sent to -@
     wrapper:
-        "v1.5.0/bio/samtools/index"
+        "v1.1.0/bio/samtools/index"
 
 rule samtools_idxstats_filtered:
 	input:
