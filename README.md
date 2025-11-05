@@ -182,16 +182,16 @@ diff_accessibility:
     Experiment_1:
       contrasts:
         wt-vs-mutant:
-          - wt
           - mutant
+          - wt
     Experiment_2:
       contrasts:
         control-vs-drugA:
-          - control
           - drugA
-        control-vs-drugB:
           - control
+        control-vs-drugB:
           - drugB
+          - control
   model: ~condition
   count_threshold: 50
   padj_cutoff: 0.05
