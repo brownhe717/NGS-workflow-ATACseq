@@ -55,7 +55,7 @@ cd path/to/project-workdir
 Deploy the workflow:
 
 ```         
-snakedeploy deploy-workflow  https://github.com/mmfreund2/NGS-workflow-ATACseq . --branch main 
+snakedeploy deploy-workflow  https://github.com/brownhe717/NGS-workflow-ATACseq . --branch main 
 ```
 
 This command will create all the files necessary for running this workflow.
