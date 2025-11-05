@@ -238,7 +238,7 @@ Examining the output of this dry run can help make sure that samples names and l
 If everything looks good, run the workflow with the following command:
 
 ```         
-snakemake --use-conda -c 1
+snakemake --use-conda -c 18 --resources mem_mb=32000
 ```
 
 The `-c 1` parameter tells snakemake to use a single core for running the workflow.
