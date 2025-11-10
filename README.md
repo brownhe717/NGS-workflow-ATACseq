@@ -241,8 +241,14 @@ If everything looks good, run the workflow with the following command:
 snakemake --use-conda -c 18 --resources mem_mb=32000
 ```
 
-The `-c 1` parameter tells snakemake to use a single core for running the workflow.
+The `-c 18` parameter tells snakemake to use a single core for running the workflow.
 Depending on the number of processors/cores available on your computer, this number can be increased, which will speed up execution by allowing multiple steps to run in parallel and allowing steps such as read alignment to use multiple cores.
+
+To only run the script for a certain rule use the -R option with fewer resources:
+
+```
+snakemake --use-conda -c 1 --resources mem_mb=1600 -R zscore_normalize_ind_bigwigs
+```
 
 This workflow can also be run on a computing cluster or using cloud computing services.
 See the relevant sections of the Snakemake documentation for more information: [Cluster execution](https://snakemake.readthedocs.io/en/stable/executing/cluster.html) [Cloud execution](https://snakemake.readthedocs.io/en/stable/executing/cloud.html)
