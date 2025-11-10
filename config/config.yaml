@@ -39,7 +39,12 @@ diff_accessibility:
 params:
   bowtie2_index: ""
   bowtie2_align: "-k 2 --very-sensitive --no-mixed --no-discordant -X 5000"
-  filter_multireads: "-f bam -F '(mapping_quality >= 30) and ([XS] == null)'" 
+  filter_multireads: "-f bam -F '(mapping_quality >= 0)'"
+  samtools_sort_by_name: "-n"
+  samtools_fixmate: "-m"
+  samtools_sort_position: ""
+  samtools_markdup: "-r"
+  samtools_index_dedup: "" 
   bigwigs_ind: "--binSize 10"
   bigwigs_merged: "--binSize 10"
   macs2_call_atac_peaks_ind: "-f BAMPE --keep-dup all -g dm --call-summits"
