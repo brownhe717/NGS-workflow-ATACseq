@@ -210,7 +210,12 @@ The final section of the config file allows customization of the parameters for 
 params:
   bowtie2_index: ""
   bowtie2_align: "-k 2 --very-sensitive --no-mixed --no-discordant -X 5000"
-  filter_multireads: "-f bam -F '(mapping_quality >= 30) and ([XS] == null)'" 
+  filter_multireads: "-f bam -F '(mapping_quality >= 0)'"
+  samtools_sort_by_name: "-n"
+  samtools_fixmate: "-m"
+  samtools_sort_position: ""
+  samtools_markdup: "-r"
+  samtools_index_dedup: "" 
   bigwigs_ind: "--binSize 10"
   bigwigs_merged: "--binSize 10"
   macs2_call_atac_peaks_ind: "-f BAMPE --keep-dup all -g dm --call-summits"
@@ -221,7 +226,7 @@ These can be modified as desired to alter these steps.
 For example, by default the workflow will run bowtie2 with parameters `-k 2 --very-sensitive --no-mixed --no-discordant -X 5000`.
 The parameters listed here in the config file will be passed directly to the corresponding step when it is run.
 
-*Note:* For ATAC-seq analysis, I recommend using the above parameters for peak calling to maximize sensitivity.
+*Note:* To keep only the multi-mapped reads change filter_multireads parameters to -f bam -F '(mapping_quality >=0) and ([XS] !=null)'
 
 ## Step 5: Running the workflow
 
@@ -250,27 +255,12 @@ To only run the script for a certain rule use the -R option with fewer resources
 snakemake --use-conda -c 1 --resources mem_mb=1600 -R zscore_normalize_ind_bigwigs
 ```
 Note a list of the snakemake rules below:
-1. retrieve_sra – download SRA data
-2. merge_reads – merge reads from different runs
-3. trim_adapters – trim adapter sequences (NGMerge)
-4. align_reads – align reads to reference (Bowtie2)
-5. filter_reads – filter alignments by MAPQ and multimappers
-6. filter_chroms – remove unwanted contigs/mitochondrial reads
-7. fragment_size_split – separate small (<100 bp) vs large fragments
-8. call_peaks_individual – run MACS2 peak calling on each replicate
-9. call_peaks_merged – run MACS2 on merged replicates
-10. bigwig_individual – make individual sample BigWigs
-11. bigwig_merged – make merged BigWigs
-12. zscore_normalize_ind_bigwigs – normalize individual BigWigs
-13. zscore_normalize_merged_bigwigs – normalize merged BigWigs
-14. featurecounts_peak_counts – count reads per peak
-15. deseq2_diff_accessibility – run DESeq2 for differential accessibility
-16. all – umbrella rule for final outputs
+DEseq2 DEseq2_results bowtie2_align bowtie2_index define_keep_chroms extend_peak_summits feature_counts filter_chroms filter_multireads get_ref_genome get_sra_pe get_sra_se large_fragments macs2_call_atac_peaks_ind macs2_call_atac_peaks_merged macs2_call_atac_peaks_merged_by_sample make_bigwigs_ind make_bigwigs_merged merge_bam merge_fastqs rename_genome samtools_idxstats_filtered samtools_idxstats_unfiltered samtools_idxstats_unireads samtools_index_aligned samtools_index_filtered samtools_index_large_fragments samtools_index_merged samtools_index_small_fragments samtools_index_unireads samtools_sort small_fragments total_fragments trim_reads zscore_normalize_ind_bigwigs zscore_normalize_merged_bigwigs all
 
 To run the workflow with all but a specific rule (and its downstream dependencies) use the --omit-from option:
 
 ```
-snakemake --use-conda -c 18 --resources mem_mb=32000 --omit-from featurecounts_peak_counts
+snakemake --use-conda -c 18 --resources mem_mb=32000 --omit-from bowtie2_align
 ```
 
 This workflow can also be run on a computing cluster or using cloud computing services.
