@@ -250,27 +250,48 @@ To only run the script for a certain rule use the -R option with fewer resources
 snakemake --use-conda -c 1 --resources mem_mb=1600 -R zscore_normalize_ind_bigwigs
 ```
 Note a list of the snakemake rules below:
-1. retrieve_sra – download SRA data
-2. merge_reads – merge reads from different runs
-3. trim_adapters – trim adapter sequences (NGMerge)
-4. align_reads – align reads to reference (Bowtie2)
-5. filter_reads – filter alignments by MAPQ and multimappers
-6. filter_chroms – remove unwanted contigs/mitochondrial reads
-7. fragment_size_split – separate small (<100 bp) vs large fragments
-8. call_peaks_individual – run MACS2 peak calling on each replicate
-9. call_peaks_merged – run MACS2 on merged replicates
-10. bigwig_individual – make individual sample BigWigs
-11. bigwig_merged – make merged BigWigs
-12. zscore_normalize_ind_bigwigs – normalize individual BigWigs
-13. zscore_normalize_merged_bigwigs – normalize merged BigWigs
-14. featurecounts_peak_counts – count reads per peak
-15. deseq2_diff_accessibility – run DESeq2 for differential accessibility
-16. all – umbrella rule for final outputs
+DEseq2
+DEseq2_results
+bowtie2_align
+bowtie2_index
+define_keep_chroms
+extend_peak_summits
+feature_counts
+filter_chroms
+filter_multireads
+get_ref_genome
+get_sra_pe
+get_sra_se
+large_fragments
+macs2_call_atac_peaks_ind
+macs2_call_atac_peaks_merged
+macs2_call_atac_peaks_merged_by_sample
+make_bigwigs_ind
+make_bigwigs_merged
+merge_bam
+merge_fastqs
+rename_genome
+samtools_idxstats_filtered
+samtools_idxstats_unfiltered
+samtools_idxstats_unireads
+samtools_index_aligned
+samtools_index_filtered
+samtools_index_large_fragments
+samtools_index_merged
+samtools_index_small_fragments
+samtools_index_unireads
+samtools_sort
+small_fragments
+total_fragments
+trim_reads
+zscore_normalize_ind_bigwigs
+zscore_normalize_merged_bigwigs
+all
 
 To run the workflow with all but a specific rule (and its downstream dependencies) use the --omit-from option:
 
 ```
-snakemake --use-conda -c 18 --resources mem_mb=32000 --omit-from featurecounts_peak_counts
+snakemake --use-conda -c 18 --resources mem_mb=32000 --omit-from bowtie2_align
 ```
 
 This workflow can also be run on a computing cluster or using cloud computing services.
