@@ -1,7 +1,11 @@
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
+  - defaults
 dependencies:
-  - r-tidyverse = 1.3.1
+  - r-base=4.2.2
+  - openssl=1.1.1*
+  - libcurl
+  - r-tidyverse=1.3.1
   - bioconductor-deseq2
-  - bioconductor-rtracklayer = 1.50.0
+  - bioconductor-rtracklayer=1.50.0
