@@ -2,23 +2,26 @@ channels:
   - conda-forge
   - bioconda
   - defaults
+channel_priority: strict
+
 dependencies:
   # Pin R version compatible with rtracklayer 1.50.0 (Bioc 3.16)
-  - r-base = 4.2.*
+  - r-base=4.2.2  # Pin exact patch version for stability
 
   # Bioconductor packages
-  - bioconductor-rtracklayer = 1.50.0
-  - bioconductor-genomicranges = 1.42.0
+  - bioconductor-rtracklayer=1.50.0
+  - bioconductor-genomicranges=1.42.0
 
   # R tidyverse pinned to R4.2
-  - r-tidyverse = 1.3.1
+  - r-tidyverse=1.3.1
 
-  # Critical system libraries rtracklayer needs
-  - openssl = 1.1.*
-  - libcurl = 7.*
-  - zlib
-  - bzip2
-  - pcre
-  - xz
+  # Critical system libraries rtracklayer needs, pinned for compatibility
+  - openssl=1.1.1l
+  - libcurl=7.81.0
+  - zlib=1.2.13
+  - bzip2=1.0.8
+  - pcre=8.45
+  - xz=5.4.4
 
-  # Remove python — not needed & conflicts with R
+  # Ensure no conflicting Python packages
+  - python=3.11  # minimal, needed for conda itself
