@@ -32,8 +32,7 @@ if config["run_diff_accessibility"]:
         "../envs/DEseq2.yaml"
     threads: 1
     resources:
-        mem_mb = 32000,
-        high_mem = 1
+        mem_mb = 32000
     log:
         "logs/DEseq2/{experiment}.log"
     script:
