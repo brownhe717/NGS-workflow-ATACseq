@@ -3,7 +3,7 @@
 # =========================
 
 wildcard_constraints:
-    frag_size = "small|large|total"
+    frag_size="small|large|total"
 
 # -------------------------
 # Individual sample bigwigs
