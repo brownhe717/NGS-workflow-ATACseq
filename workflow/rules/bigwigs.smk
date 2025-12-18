@@ -20,7 +20,7 @@ rule make_bigwigs_ind:
         extra=config["params"]["bigwigs_ind"] 
     threads: 8
     resources:
-        mem_mb: 32000
+        mem_mb = 32000
     shell:
         "bamCoverage --bam {input.bam} -o {output} -p {threads} {params.extra}"
 
@@ -33,9 +33,7 @@ rule merge_bam:
         get_bam_merge
     output:
         temp("results/aligned_reads/merged/{sample_group}_{frag_size}.bam")
-    params:
-        ""  # optional extra params
-    threads: 8  # samtools -@ threads-1
+    threads: 8
     wrapper:
         "v1.1.0/bio/samtools/merge"
 
@@ -46,9 +44,7 @@ rule samtools_index_merged:
         temp("results/aligned_reads/merged/{sample}_{frag_size}.bam.bai")
     log:
         "logs/samtools_index/{sample}_{frag_size}.log"
-    params:
-        ""  # optional params
-    threads: 4  # samtools -@ threads-1
+    threads: 4
     wrapper:
         "v1.1.0/bio/samtools/index"
 
@@ -64,7 +60,7 @@ rule make_bigwigs_merged:
         extra=config["params"]["bigwigs_merged"]
     threads: 8
     resources:
-        mem_mb: 32000
+        mem_mb = 32000
     shell:
         "bamCoverage --bam {input.bam} -o {output} -p {threads} {params.extra}"
 
@@ -79,10 +75,10 @@ rule zscore_normalize_ind_bigwigs:
         "results/bigwigs/zscore_normalized/individual/{sample}_{frag_size}.bw"
     conda:
         "../envs/zscore_normalize_bw.yaml"
-    threads: 1  # single-threaded
+    threads: 1
     resources:
-        mem_mb: 32000
-        high_mem: 1
+        mem_mb = 32000
+        high_mem = 1
     script:
         "../scripts/zscore_normalize_bw.R"
 
@@ -95,7 +91,8 @@ rule zscore_normalize_merged_bigwigs:
         "../envs/zscore_normalize_bw.yaml"
     threads: 1
     resources:
-        mem_mb: 32000
-        high_mem: 1
+        mem_mb = 32000
+        high_mem = 1
     script:
         "../scripts/zscore_normalize_bw.R"
+
