@@ -17,7 +17,7 @@ rule make_bigwigs_ind:
     conda:
         "../envs/deeptools.yaml"
     params:
-        extra = config["params"]["bigwigs_ind"] 
+        extra = config["params"]["bigwigs_ind"]
     threads: 8
     resources:
         mem_mb = 32000
