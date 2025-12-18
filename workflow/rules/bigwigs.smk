@@ -75,7 +75,8 @@ rule zscore_normalize_ind_bigwigs:
         "../envs/zscore_normalize_bw.yaml"
     threads: 1
     resources:
-        mem_mb=32000
+        mem_mb=32000,
+        high_mem=1
     script:
         "../scripts/zscore_normalize_bw.R"
 
@@ -88,6 +89,7 @@ rule zscore_normalize_merged_bigwigs:
         "../envs/zscore_normalize_bw.yaml"
     threads: 1
     resources:
-        mem_mb=32000
+        mem_mb=32000,
+        high_mem=1
     script:
         "../scripts/zscore_normalize_bw.R"
