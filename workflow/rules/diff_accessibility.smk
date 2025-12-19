@@ -20,23 +20,20 @@ rule feature_counts:
 
 if config["run_diff_accessibility"]:
 	rule DEseq2:
-    input:
-        "results/count_tables/{experiment}.featureCounts"
-    output:
-        "results/DEseq2/{experiment}.dds"
-    params:
-        samples=config["samples"],
-        model=config["diff_accessibility"]["model"],
-        count_threshold=config["diff_accessibility"]["count_threshold"],
-    conda:
-        "../envs/DEseq2.yaml"
-    threads: 1
-    resources:
-        mem_mb = 32000
-    log:
-        "logs/DEseq2/{experiment}.log"
-    script:
-        "../scripts/DEseq2.R"	
+		input:
+			"results/count_tables/{experiment}.featureCounts"
+		output:
+			"results/DEseq2/{experiment}.dds"
+		params:
+			samples=config["samples"],
+			model=config["diff_accessibility"]["model"],
+			count_threshold=config["diff_accessibility"]["count_threshold"],
+		conda:
+			"../envs/DEseq2.yaml",
+		log:
+			"logs/DEseq2/{experiment}.log",
+		script:
+			"../scripts/DEseq2.R"
 
 	rule DEseq2_results:
 		input:
