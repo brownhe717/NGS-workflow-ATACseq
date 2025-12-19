@@ -295,6 +295,20 @@ snakemake --use-conda -c 18 --resources mem_mb=32000 --omit-from bowtie2_align
 ```
 
 This workflow can also be run on a computing cluster or using cloud computing services.
+
+For the UW CHTC run with the following command to bind staging directory and limit parallel runs for high_mem jobs:
+
+```
+apptainer exec --bind /staging:/staging snakemakeR.sif \
+    snakemake \
+        -s workflow/Snakefile \
+        --use-conda \
+        --cores 8 \
+        --resources high_mem=1 \
+        --printshellcmds \
+        --rerun-incomplete
+```
+
 See the relevant sections of the Snakemake documentation for more information: [Cluster execution](https://snakemake.readthedocs.io/en/stable/executing/cluster.html) [Cloud execution](https://snakemake.readthedocs.io/en/stable/executing/cloud.html)
 
 # Navigating the output
@@ -334,8 +348,6 @@ For an example of how to build a complex workflow including multiple datasets as
 # To-do
 
 In the future, I hope to add some of the following features:
-
--   Add small, test fastq files to repo to allow for automated testing of rules
 
 -   Create an HTML summary file containing read alignment and filtering statistics, number of peaks called, and other useful information about the workflow.
 
