@@ -62,7 +62,7 @@ rule zscore_normalize_ind_bigwigs:
 		"results/bigwigs/zscore_normalized/individual/{sample}_{frag_size}.bw"
 	resources:
 		mem_mb = 32000,
-        high_mem = 1
+		high_mem = 1
 	conda:
 		"../envs/zscore_normalize_bw.yaml"
 	script:
@@ -75,7 +75,7 @@ rule zscore_normalize_merged_bigwigs:
 		"results/bigwigs/zscore_normalized/merged/{sample}_{frag_size}.bw"
 	resources:
 		mem_mb = 32000,
-        high_mem = 1
+		high_mem = 1
 	conda:
 		"../envs/zscore_normalize_bw.yaml"
 	script:
