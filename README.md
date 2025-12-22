@@ -57,6 +57,11 @@ Deploy the workflow:
 ```         
 snakedeploy deploy-workflow  https://github.com/brownhe717/NGS-workflow-ATACseq . --branch main 
 ```
+Deploy the hybrid branch workflow:
+
+```         
+snakedeploy deploy-workflow  https://github.com/brownhe717/NGS-workflow-ATACseq . --branch hybrid 
+```
 
 This command will create all the files necessary for running this workflow.
 
