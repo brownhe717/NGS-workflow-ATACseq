@@ -37,25 +37,26 @@ diff_accessibility:
 
 # changes to rule paramters ---------------------------------------------------------------
 # Alignment
-bowtie2_index: ""
-bowtie2_align: "-k 2 --very-sensitive --no-mixed --no-discordant -X 5000"
+params:
+  bowtie2_index: ""
+  bowtie2_align: "-k 2 --very-sensitive --no-mixed --no-discordant -X 5000"
 
-# Filter reads
-filter_multireads: "-q 0"   # keep all reads with mapping quality >=0
+  # Filter reads
+  filter_multireads: "-q 0"   # keep all reads with mapping quality >=0
 
-# Preprocessing
-samtools_sort_by_name: "-n"
-samtools_fixmate: "-m"
-samtools_sort_position: ""   # default position sort
+  # Preprocessing
+  samtools_sort_by_name: "-n"
+  samtools_fixmate: "-m"
+  samtools_sort_position: ""   # default position sort
 
-# Duplicate handling
-samtools_markdup: "-s"       # mark duplicates instead of removing
-samtools_index_dedup: ""     # index after markdup
+  # Duplicate handling
+  samtools_markdup: "-s"       # mark duplicates instead of removing
+  samtools_index_dedup: ""     # index after markdup
 
-# Bigwig generation
-bigwigs_ind: "--binSize 10"
-bigwigs_merged: "--binSize 10"
+  # Bigwig generation
+  bigwigs_ind: "--binSize 10"
+  bigwigs_merged: "--binSize 10"
 
-# MACS2 peak calling
-macs2_call_atac_peaks_ind: "-f BAMPE --keep-dup all -g dm --call-summits"
-macs2_call_atac_peaks_merged: "-f BAMPE --keep-dup all -g dm --call-summits"
+  # MACS2 peak calling
+  macs2_call_atac_peaks_ind: "-f BAMPE --keep-dup all -g dm --call-summits"
+  macs2_call_atac_peaks_merged: "-f BAMPE --keep-dup all -g dm --call-summits"
