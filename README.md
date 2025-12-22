@@ -52,10 +52,14 @@ mkdir -p path/to/project-workdir
 cd path/to/project-workdir
 ```
 
-Deploy the workflow:
+Deploy the workflow from main branch:
 
 ```         
 snakedeploy deploy-workflow  https://github.com/brownhe717/NGS-workflow-ATACseq . --branch main 
+```
+Deploy the workflow from the test branch:
+```
+snakedeploy deploy-workflow https://github.com/brownhe717/NGS-workflow-ATACseq . --branch samtools-dedup-test
 ```
 
 This command will create all the files necessary for running this workflow.
