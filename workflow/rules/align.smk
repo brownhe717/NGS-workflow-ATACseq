@@ -75,3 +75,41 @@ rule samtools_index_aligned:
         4     # This value - 1 will be sent to -@
     wrapper:
         "v1.1.0/bio/samtools/index"
+
+rule split_hybrid_bam:
+    """
+    Split sorted BAM into parental BAMs (Dmel vs Dsim) and log reads mapping to both.
+    Uses hybrid_chrom_prefixes and multi_log_dir from config.yaml.
+    """
+    input:
+        bam="results/aligned_reads/sorted/{sample}.bam"
+    output:
+        Dmel_bam="results/aligned_reads/sorted/{sample}_Dmel.bam",
+        Dsim_bam="results/aligned_reads/sorted/{sample}_Dsim.bam",
+        multi_log=lambda wildcards: f"{config['params']['split_hybrid_bam']['multi_log_dir']}/{wildcards.sample}_multi_parent_reads.txt"
+    log:
+        "logs/bowtie2/{sample}_split.log"
+    threads: 4
+    run:
+        if config["params"]["split_hybrid_bam"]["enable"]:
+            shell(
+                r"""
+                # Extract Dmel reads
+                samtools view -b {input.bam} '{config[hybrid_chrom_prefixes][Dmel]}*' > {output.Dmel_bam}
+
+                # Extract Dsim reads
+                samtools view -b {input.bam} '{config[hybrid_chrom_prefixes][Dsim]}*' > {output.Dsim_bam}
+
+                # List read names
+                samtools view {output.Dmel_bam} | cut -f1 | sort > Dmel_reads.txt
+                samtools view {output.Dsim_bam} | cut -f1 | sort > Dsim_reads.txt
+
+                # Multi-parent reads
+                comm -12 Dmel_reads.txt Dsim_reads.txt > {output.multi_log}
+
+                # Clean up temp files
+                rm Dmel_reads.txt Dsim_reads.txt
+                """
+            )
+        else:
+            print(f"Hybrid BAM splitting disabled in config; skipping {wildcards.sample}")
