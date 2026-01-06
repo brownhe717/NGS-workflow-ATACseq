@@ -57,7 +57,7 @@ if config["filter_chroms"]:
         log:
             "logs/filter_chroms/{sample}.log"
         params:
-            extra=lambda wildcards, input: f"-L {input.bed}"
+            extra="-L resources/keep_chroms.bed"
         wrapper:
             "v1.1.0/bio/samtools/view"
 
