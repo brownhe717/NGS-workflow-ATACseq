@@ -51,15 +51,15 @@ if config["filter_chroms"]:
     rule filter_chroms:
         input:
             bam="results/aligned_reads/unireads/{sample}.bam",
-            keep_chroms="resources/keep_chroms.bed"
+            bed="resources/keep_chroms.bed"
         output:
             "results/aligned_reads/filtered/{sample}.bam"
         log:
             "logs/filter_chroms/{sample}.log"
-        conda:
-            "../envs/samtools.yaml"
-        shell:
-            "samtools view -bh -L {input.keep_chroms} --output-fmt BAM -o {output} {input.bam} 2>> {log}"
+        params:
+            extra="-L {input.bed}"
+        wrapper:
+            "v1.1.0/bio/samtools/view"
 
 else:
     rule filter_multireads:
