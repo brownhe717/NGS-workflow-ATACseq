@@ -48,6 +48,21 @@ rule bowtie2_align:
 	wrapper:
 		"v1.1.0/bio/bowtie2/align"
 
+rule summarize_hybrid_mapping:
+    input:
+        bam="results/aligned_reads/mapped/{sample}.bam"
+    output:
+        "results/qc/hybrid_mapping/{sample}_mapping_summary.tsv"
+    log:
+        "logs/qc/hybrid_mapping_{sample}.log"
+    conda:
+        "../envs/pysam.yaml"
+    shell:
+        """
+        python workflow/scripts/summarize_hybrid_mapping.py \
+            {input.bam} {output} > {log} 2>&1
+        """
+
 rule samtools_sort:
     input:
        "results/aligned_reads/mapped/{sample}.bam"
