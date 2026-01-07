@@ -7,7 +7,7 @@ rule get_ref_genome:
 		"../envs/curl.yaml"
 
 	params:
-		link=config["ref_genome"]["link"],
+		link=config["ref_genome"]["fasta"],
 	cache: True
 	shell:
 		"curl {params.link} > {output} 2> {log}"
