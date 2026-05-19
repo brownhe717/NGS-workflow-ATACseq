@@ -32,4 +32,16 @@ include: "rules/diff_accessibility.smk"
 ##### target rules #####
 rule all:
     input:
-        get_final_output()
+        expand("results/hybrid_atac/aligned/{sample}.concat.sorted.bam", sample=samples.index),
+        expand("results/hybrid_atac/aligned_unique/{sample}.concat.unique.sorted.bam", sample=samples.index),
+
+        expand("results/hybrid_atac/bigwigs/multimapper_inclusive/{sample}.bw", sample=samples.index),
+        expand("results/hybrid_atac/bigwigs/unique_only/{sample}.bw", sample=samples.index),
+
+        expand("results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/individual/{sample}.bw", sample=samples.index),
+        expand("results/hybrid_atac/bigwigs_zscore/unique_only/individual/{sample}.bw", sample=samples.index),
+
+        expand("results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/merged/{condition}.bw",
+               condition=sorted(samples["condition"].unique())),
+        expand("results/hybrid_atac/bigwigs_zscore/unique_only/merged/{condition}.bw",
+               condition=sorted(samples["condition"].unique()))
