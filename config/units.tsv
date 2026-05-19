@@ -1,5 +1,10 @@
 sample_name	unit_name	fq1	fq2	sra	read_format	sample_group
-sfGFP-GAF-N_control_rep1	sfGFP-GAF-N_control_rep1			SRR13498852	PE	sfGFP-GAF-N_control
-sfGFP-GAF-N_control_rep2	sfGFP-GAF-N_control_rep2			SRR13498853	PE	sfGFP-GAF-N_control
-sfGFP-GAF-N_degradFP_rep1	sfGFP-GAF-N_degradFP_rep1			SRR13498858	PE	sfGFP-GAF-N_degrad
-sfGFP-GAF-N_degradFP_rep2	sfGFP-GAF-N_degradFP_rep2			SRR13498859	PE	sfGFP-GAF-N_degrad
+Hybrid_control_mel_rep1	Hybrid_control_mel_rep1	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB15_S39_L007_R1_001.fastq.gz	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB15_S39_L007_R2_001.fastq.gz		PE	Hybrid_control_mel
+Hybrid_control_mel_rep2	Hybrid_control_mel_rep2	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB16_S40_L007_R1_001.fastq.gz	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB16_S40_L007_R2_001.fastq.gz		PE	Hybrid_control_mel
+Hybrid_control_mel_rep4	Hybrid_control_mel_rep4	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB1_S72_L001_R1_001.fastq.gz	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB1_S72_L001_R2_001.fastq.gz		PE	Hybrid_control_mel
+Hybrid_experimental_rep2	Hybrid_experimental_rep2	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB19_S43_L007_R1_001.fastq.gz	/staging/hebrown3/072525_Hybrid_ATAC/raw_data/HB19_S43_L007_R2_001.fastq.gz		PE	Hybrid_experimental
+Hybrid_experimental_rep4	Hybrid_experimental_rep4	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB3_S73_L001_R1_001.fastq.gz	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB3_S73_L001_R2_001.fastq.gz		PE	Hybrid_experimental
+Hybrid_experimental_rep5	Hybrid_experimental_rep5	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB5_S74_L001_R1_001.fastq.gz	/staging/hebrown3/101725_Hybrid_ATAC_extraREPS/raw_data_M009829/HB5_S74_L001_R2_001.fastq.gz		PE	Hybrid_experimental
+Hybrid_control_sim_rep1	Hybrid_control_sim_rep1	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB1_S9_L007_R1_001.fastq.gz	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB1_S9_L007_R2_001.fastq.gz		PE	Hybrid_control_sim
+Hybrid_control_sim_rep2	Hybrid_control_sim_rep2	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB2_S10_L007_R1_001.fastq.gz	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB2_S10_L007_R2_001.fastq.gz		PE	Hybrid_control_sim
+Hybrid_control_sim_rep3	Hybrid_control_sim_rep3	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB3_S11_L007_R1_001.fastq.gz	/staging/hebrown3/030326_Hybrid_RNA/ATAC_w501/HB3_S11_L007_R2_001.fastq.gz		PE	Hybrid_control_sim
