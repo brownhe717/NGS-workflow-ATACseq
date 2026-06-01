@@ -43,20 +43,4 @@ rule all:
         expand(
             "results/hybrid_atac/bigwigs/unique_only/{sample_name}.bw",
             sample_name=samples.index
-        ),
-        expand(
-            "results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/individual/{sample_name}.bw",
-            sample_name=samples.index
-        ),
-        expand(
-            "results/hybrid_atac/bigwigs_zscore/unique_only/individual/{sample_name}.bw",
-            sample_name=samples.index
-        ),
-        expand(
-            "results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/merged/{sample_group}.bw",
-            sample_group=sorted(samples["condition"].unique())
-        ),
-        expand(
-            "results/hybrid_atac/bigwigs_zscore/unique_only/merged/{sample_group}.bw",
-            sample_group=sorted(samples["condition"].unique())
         )
