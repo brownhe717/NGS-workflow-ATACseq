@@ -28,19 +28,50 @@ include: "rules/hybrid_atac.smk"
 ##### target rules #####
 rule all:
     input:
+        # individual multimapper-inclusive BAMs
         expand(
             "results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam",
             sample_name=samples.index
         ),
+
+        # individual unique-only BAMs
         expand(
             "results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam",
             sample_name=samples.index
         ),
+
+        # merged multimapper-inclusive BAMs by condition
+        expand(
+            "results/hybrid_atac/aligned_merged/multimapper_inclusive/{sample_group}.bam",
+            sample_group=sorted(samples["condition"].unique())
+        ),
+
+        # merged unique-only BAMs by condition
+        expand(
+            "results/hybrid_atac/aligned_merged/unique_only/{sample_group}.bam",
+            sample_group=sorted(samples["condition"].unique())
+        ),
+
+        # individual multimapper-inclusive BigWigs
         expand(
             "results/hybrid_atac/bigwigs/multimapper_inclusive/{sample_name}.bw",
             sample_name=samples.index
         ),
+
+        # individual unique-only BigWigs
         expand(
             "results/hybrid_atac/bigwigs/unique_only/{sample_name}.bw",
             sample_name=samples.index
+        ),
+
+        # merged multimapper-inclusive BigWigs by condition
+        expand(
+            "results/hybrid_atac/bigwigs/multimapper_inclusive_merged/{sample_group}.bw",
+            sample_group=sorted(samples["condition"].unique())
+        ),
+
+        # merged unique-only BigWigs by condition
+        expand(
+            "results/hybrid_atac/bigwigs/unique_only_merged/{sample_group}.bw",
+            sample_group=sorted(samples["condition"].unique())
         )
