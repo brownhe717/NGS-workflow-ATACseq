@@ -55,7 +55,7 @@ rule bowtie2_align_concat:
         )
     log:
         "logs/hybrid_atac/bowtie2_align/{sample_name}.log"
-    threads: 4
+    threads: 8
     shell:
         r"""
         mkdir -p results/hybrid_atac/aligned logs/hybrid_atac/bowtie2_align
