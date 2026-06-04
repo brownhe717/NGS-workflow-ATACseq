@@ -45,7 +45,7 @@ hybrid_atac:
 
   # Bowtie2 multimapping behavior for concat alignment
   keep_multimappers: True
-  bowtie2_k: 10
+  bowtie2_k: 2
 
   # Unique-only BAM branch
   make_unique_bams: True
@@ -76,7 +76,7 @@ params:
 
   # concat hybrid ATAC branch
   # hybrid_atac.smk appends: -k {hybrid_atac.bowtie2_k}
-  bowtie2_align_concat: "--very-sensitive --no-mixed --no-discordant -X 5000"
+  bowtie2_align_concat: "--very-sensitive --no-mixed --no-discordant -X 1000"
 
   # original dm6-only filtering
   filter_multireads: "-f bam -F '(mapping_quality >= 30) and ([XS] == null)'"
