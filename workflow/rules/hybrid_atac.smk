@@ -128,6 +128,54 @@ def get_hybrid_atac_unique_bams_by_group(wildcards):
         sample_name=group_samples
     )
 
+rule filter_major_chroms_multi_bam:
+    input:
+        bam="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam",
+        bai="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam.bai"
+    output:
+        bam="results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam",
+        bai="results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam.bai"
+    conda:
+        HYBRID_ATAC_ENV
+    params:
+        keep=config["hybrid_atac"]["keep_major_chroms_concat"]
+    log:
+        "logs/hybrid_atac/filter_noMT_multi/{sample_name}.log"
+    threads: 4
+    shell:
+        r"""
+        mkdir -p results/hybrid_atac/aligned_noMT/multimapper_inclusive logs/hybrid_atac/filter_noMT_multi
+
+        samtools view -h {input.bam} $(cat {params.keep}) 2> {log} | \
+        samtools sort -@ {threads} -o {output.bam} 2>> {log}
+
+        samtools index {output.bam} 2>> {log}
+        """
+
+
+rule filter_major_chroms_unique_bam:
+    input:
+        bam="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam",
+        bai="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam.bai"
+    output:
+        bam="results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam",
+        bai="results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam.bai"
+    conda:
+        HYBRID_ATAC_ENV
+    params:
+        keep=config["hybrid_atac"]["keep_major_chroms_concat"]
+    log:
+        "logs/hybrid_atac/filter_noMT_unique/{sample_name}.log"
+    threads: 4
+    shell:
+        r"""
+        mkdir -p results/hybrid_atac/aligned_noMT/unique_only logs/hybrid_atac/filter_noMT_unique
+
+        samtools view -h {input.bam} $(cat {params.keep}) 2> {log} | \
+        samtools sort -@ {threads} -o {output.bam} 2>> {log}
+
+        samtools index {output.bam} 2>> {log}
+        """
 
 rule merge_hybrid_atac_multi_bam:
     input:
