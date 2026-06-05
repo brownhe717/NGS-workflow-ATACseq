@@ -116,7 +116,7 @@ HYBRID_ATAC_SAMPLE_GROUPS = sorted(samples["condition"].unique())
 def get_hybrid_atac_multi_bams_by_group(wildcards):
     group_samples = samples.query("condition == @wildcards.sample_group").index
     return expand(
-        "results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam",
+        "results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam",
         sample_name=group_samples
     )
 
@@ -124,7 +124,7 @@ def get_hybrid_atac_multi_bams_by_group(wildcards):
 def get_hybrid_atac_unique_bams_by_group(wildcards):
     group_samples = samples.query("condition == @wildcards.sample_group").index
     return expand(
-        "results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam",
+        "results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam",
         sample_name=group_samples
     )
 
