@@ -110,25 +110,7 @@ rule filter_unique_concat_atac_bam:
         """
 
 
-HYBRID_ATAC_SAMPLE_GROUPS = sorted(samples["condition"].unique())
-
-
-def get_hybrid_atac_multi_bams_by_group(wildcards):
-    group_samples = samples.query("condition == @wildcards.sample_group").index
-    return expand(
-        "results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam",
-        sample_name=group_samples
-    )
-
-
-def get_hybrid_atac_unique_bams_by_group(wildcards):
-    group_samples = samples.query("condition == @wildcards.sample_group").index
-    return expand(
-        "results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam",
-        sample_name=group_samples
-    )
-
-rule filter_major_chroms_multi_bam:
+rule filter_noMT_multi_bam:
     input:
         bam="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam",
         bai="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam.bai"
@@ -146,14 +128,23 @@ rule filter_major_chroms_multi_bam:
         r"""
         mkdir -p results/hybrid_atac/aligned_noMT/multimapper_inclusive logs/hybrid_atac/filter_noMT_multi
 
-        samtools view -h {input.bam} $(cat {params.keep}) 2> {log} | \
-        samtools sort -@ {threads} -o {output.bam} 2>> {log}
+        samtools view \
+            -h \
+            {input.bam} \
+            $(cat {params.keep}) \
+            2> {log} | \
+        samtools sort \
+            -@ {threads} \
+            -o {output.bam} \
+            2>> {log}
 
         samtools index {output.bam} 2>> {log}
+
+        echo "Created noMT multimapper-inclusive BAM from {input.bam}" >> {log}
         """
 
 
-rule filter_major_chroms_unique_bam:
+rule filter_noMT_unique_bam:
     input:
         bam="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam",
         bai="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam.bai"
@@ -171,26 +162,55 @@ rule filter_major_chroms_unique_bam:
         r"""
         mkdir -p results/hybrid_atac/aligned_noMT/unique_only logs/hybrid_atac/filter_noMT_unique
 
-        samtools view -h {input.bam} $(cat {params.keep}) 2> {log} | \
-        samtools sort -@ {threads} -o {output.bam} 2>> {log}
+        samtools view \
+            -h \
+            {input.bam} \
+            $(cat {params.keep}) \
+            2> {log} | \
+        samtools sort \
+            -@ {threads} \
+            -o {output.bam} \
+            2>> {log}
 
         samtools index {output.bam} 2>> {log}
+
+        echo "Created noMT unique-only BAM from {input.bam}" >> {log}
         """
 
-rule merge_hybrid_atac_multi_bam:
+
+HYBRID_ATAC_SAMPLE_GROUPS = sorted(samples["condition"].unique())
+
+
+def get_hybrid_atac_noMT_multi_bams_by_group(wildcards):
+    group_samples = samples.query("condition == @wildcards.sample_group").index
+    return expand(
+        "results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam",
+        sample_name=group_samples
+    )
+
+
+def get_hybrid_atac_noMT_unique_bams_by_group(wildcards):
+    group_samples = samples.query("condition == @wildcards.sample_group").index
+    return expand(
+        "results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam",
+        sample_name=group_samples
+    )
+
+
+rule merge_hybrid_atac_noMT_multi_bam:
     input:
-        get_hybrid_atac_multi_bams_by_group
+        get_hybrid_atac_noMT_multi_bams_by_group
     output:
-        bam="results/hybrid_atac/aligned_merged/multimapper_inclusive/{sample_group}.bam",
-        bai="results/hybrid_atac/aligned_merged/multimapper_inclusive/{sample_group}.bam.bai"
+        bam="results/hybrid_atac/aligned_merged_noMT/multimapper_inclusive/{sample_group}.noMT.bam",
+        bai="results/hybrid_atac/aligned_merged_noMT/multimapper_inclusive/{sample_group}.noMT.bam.bai"
     conda:
         HYBRID_ATAC_ENV
     log:
-        "logs/hybrid_atac/merge_multi/{sample_group}.log"
+        "logs/hybrid_atac/merge_noMT_multi/{sample_group}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/aligned_merged/multimapper_inclusive logs/hybrid_atac/merge_multi
+        mkdir -p results/hybrid_atac/aligned_merged_noMT/multimapper_inclusive logs/hybrid_atac/merge_noMT_multi
 
         samtools merge \
             -@ {threads} \
@@ -203,20 +223,20 @@ rule merge_hybrid_atac_multi_bam:
         """
 
 
-rule merge_hybrid_atac_unique_bam:
+rule merge_hybrid_atac_noMT_unique_bam:
     input:
-        get_hybrid_atac_unique_bams_by_group
+        get_hybrid_atac_noMT_unique_bams_by_group
     output:
-        bam="results/hybrid_atac/aligned_merged/unique_only/{sample_group}.bam",
-        bai="results/hybrid_atac/aligned_merged/unique_only/{sample_group}.bam.bai"
+        bam="results/hybrid_atac/aligned_merged_noMT/unique_only/{sample_group}.noMT.bam",
+        bai="results/hybrid_atac/aligned_merged_noMT/unique_only/{sample_group}.noMT.bam.bai"
     conda:
         HYBRID_ATAC_ENV
     log:
-        "logs/hybrid_atac/merge_unique/{sample_group}.log"
+        "logs/hybrid_atac/merge_noMT_unique/{sample_group}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/aligned_merged/unique_only logs/hybrid_atac/merge_unique
+        mkdir -p results/hybrid_atac/aligned_merged_noMT/unique_only logs/hybrid_atac/merge_noMT_unique
 
         samtools merge \
             -@ {threads} \
@@ -229,22 +249,22 @@ rule merge_hybrid_atac_unique_bam:
         """
 
 
-rule make_bigwigs_hybrid_atac_multi:
+rule make_bigwigs_hybrid_atac_noMT_multi:
     input:
-        bam="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam",
-        bai="results/hybrid_atac/aligned/{sample_name}.concat.multimapper.sorted.bam.bai"
+        bam="results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam",
+        bai="results/hybrid_atac/aligned_noMT/multimapper_inclusive/{sample_name}.concat.multimapper.noMT.sorted.bam.bai"
     output:
-        "results/hybrid_atac/bigwigs/multimapper_inclusive/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_noMT/multimapper_inclusive/{sample_name}.bw"
     conda:
         "../envs/deeptools.yaml"
     params:
         extra=config["params"]["bigwigs_ind"]
     log:
-        "logs/hybrid_atac/bigwigs_multi/{sample_name}.log"
+        "logs/hybrid_atac/bigwigs_noMT_multi/{sample_name}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/bigwigs/multimapper_inclusive logs/hybrid_atac/bigwigs_multi
+        mkdir -p results/hybrid_atac/bigwigs_noMT/multimapper_inclusive logs/hybrid_atac/bigwigs_noMT_multi
 
         bamCoverage \
             --bam {input.bam} \
@@ -255,22 +275,22 @@ rule make_bigwigs_hybrid_atac_multi:
         """
 
 
-rule make_bigwigs_hybrid_atac_unique:
+rule make_bigwigs_hybrid_atac_noMT_unique:
     input:
-        bam="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam",
-        bai="results/hybrid_atac/aligned_unique/{sample_name}.concat.unique.sorted.bam.bai"
+        bam="results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam",
+        bai="results/hybrid_atac/aligned_noMT/unique_only/{sample_name}.concat.unique.noMT.sorted.bam.bai"
     output:
-        "results/hybrid_atac/bigwigs/unique_only/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_noMT/unique_only/{sample_name}.bw"
     conda:
         "../envs/deeptools.yaml"
     params:
         extra=config["params"]["bigwigs_ind"]
     log:
-        "logs/hybrid_atac/bigwigs_unique/{sample_name}.log"
+        "logs/hybrid_atac/bigwigs_noMT_unique/{sample_name}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/bigwigs/unique_only logs/hybrid_atac/bigwigs_unique
+        mkdir -p results/hybrid_atac/bigwigs_noMT/unique_only logs/hybrid_atac/bigwigs_noMT_unique
 
         bamCoverage \
             --bam {input.bam} \
@@ -281,22 +301,22 @@ rule make_bigwigs_hybrid_atac_unique:
         """
 
 
-rule make_bigwigs_hybrid_atac_multi_merged:
+rule make_bigwigs_hybrid_atac_noMT_multi_merged:
     input:
-        bam="results/hybrid_atac/aligned_merged/multimapper_inclusive/{sample_group}.bam",
-        bai="results/hybrid_atac/aligned_merged/multimapper_inclusive/{sample_group}.bam.bai"
+        bam="results/hybrid_atac/aligned_merged_noMT/multimapper_inclusive/{sample_group}.noMT.bam",
+        bai="results/hybrid_atac/aligned_merged_noMT/multimapper_inclusive/{sample_group}.noMT.bam.bai"
     output:
-        "results/hybrid_atac/bigwigs/multimapper_inclusive_merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_noMT/multimapper_inclusive_merged/{sample_group}.bw"
     conda:
         "../envs/deeptools.yaml"
     params:
         extra=config["params"]["bigwigs_merged"]
     log:
-        "logs/hybrid_atac/bigwigs_multi_merged/{sample_group}.log"
+        "logs/hybrid_atac/bigwigs_noMT_multi_merged/{sample_group}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/bigwigs/multimapper_inclusive_merged logs/hybrid_atac/bigwigs_multi_merged
+        mkdir -p results/hybrid_atac/bigwigs_noMT/multimapper_inclusive_merged logs/hybrid_atac/bigwigs_noMT_multi_merged
 
         bamCoverage \
             --bam {input.bam} \
@@ -307,22 +327,22 @@ rule make_bigwigs_hybrid_atac_multi_merged:
         """
 
 
-rule make_bigwigs_hybrid_atac_unique_merged:
+rule make_bigwigs_hybrid_atac_noMT_unique_merged:
     input:
-        bam="results/hybrid_atac/aligned_merged/unique_only/{sample_group}.bam",
-        bai="results/hybrid_atac/aligned_merged/unique_only/{sample_group}.bam.bai"
+        bam="results/hybrid_atac/aligned_merged_noMT/unique_only/{sample_group}.noMT.bam",
+        bai="results/hybrid_atac/aligned_merged_noMT/unique_only/{sample_group}.noMT.bam.bai"
     output:
-        "results/hybrid_atac/bigwigs/unique_only_merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_noMT/unique_only_merged/{sample_group}.bw"
     conda:
         "../envs/deeptools.yaml"
     params:
         extra=config["params"]["bigwigs_merged"]
     log:
-        "logs/hybrid_atac/bigwigs_unique_merged/{sample_group}.log"
+        "logs/hybrid_atac/bigwigs_noMT_unique_merged/{sample_group}.log"
     threads: 2
     shell:
         r"""
-        mkdir -p results/hybrid_atac/bigwigs/unique_only_merged logs/hybrid_atac/bigwigs_unique_merged
+        mkdir -p results/hybrid_atac/bigwigs_noMT/unique_only_merged logs/hybrid_atac/bigwigs_noMT_unique_merged
 
         bamCoverage \
             --bam {input.bam} \
@@ -333,11 +353,11 @@ rule make_bigwigs_hybrid_atac_unique_merged:
         """
 
 
-rule zscore_normalize_hybrid_atac_multi_ind_bigwigs:
+rule zscore_normalize_hybrid_atac_noMT_multi_ind_bigwigs:
     input:
-        "results/hybrid_atac/bigwigs/multimapper_inclusive/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_noMT/multimapper_inclusive/{sample_name}.bw"
     output:
-        "results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/individual/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_zscore_noMT/multimapper_inclusive/individual/{sample_name}.bw"
     resources:
         mem_mb=32000,
         high_mem=1
@@ -347,11 +367,11 @@ rule zscore_normalize_hybrid_atac_multi_ind_bigwigs:
         "../scripts/zscore_normalize_bw.R"
 
 
-rule zscore_normalize_hybrid_atac_unique_ind_bigwigs:
+rule zscore_normalize_hybrid_atac_noMT_unique_ind_bigwigs:
     input:
-        "results/hybrid_atac/bigwigs/unique_only/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_noMT/unique_only/{sample_name}.bw"
     output:
-        "results/hybrid_atac/bigwigs_zscore/unique_only/individual/{sample_name}.bw"
+        "results/hybrid_atac/bigwigs_zscore_noMT/unique_only/individual/{sample_name}.bw"
     resources:
         mem_mb=32000,
         high_mem=1
@@ -361,11 +381,11 @@ rule zscore_normalize_hybrid_atac_unique_ind_bigwigs:
         "../scripts/zscore_normalize_bw.R"
 
 
-rule zscore_normalize_hybrid_atac_multi_merged_bigwigs:
+rule zscore_normalize_hybrid_atac_noMT_multi_merged_bigwigs:
     input:
-        "results/hybrid_atac/bigwigs/multimapper_inclusive_merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_noMT/multimapper_inclusive_merged/{sample_group}.bw"
     output:
-        "results/hybrid_atac/bigwigs_zscore/multimapper_inclusive/merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_zscore_noMT/multimapper_inclusive/merged/{sample_group}.bw"
     resources:
         mem_mb=32000,
         high_mem=1
@@ -375,11 +395,11 @@ rule zscore_normalize_hybrid_atac_multi_merged_bigwigs:
         "../scripts/zscore_normalize_bw.R"
 
 
-rule zscore_normalize_hybrid_atac_unique_merged_bigwigs:
+rule zscore_normalize_hybrid_atac_noMT_unique_merged_bigwigs:
     input:
-        "results/hybrid_atac/bigwigs/unique_only_merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_noMT/unique_only_merged/{sample_group}.bw"
     output:
-        "results/hybrid_atac/bigwigs_zscore/unique_only/merged/{sample_group}.bw"
+        "results/hybrid_atac/bigwigs_zscore_noMT/unique_only/merged/{sample_group}.bw"
     resources:
         mem_mb=32000,
         high_mem=1
