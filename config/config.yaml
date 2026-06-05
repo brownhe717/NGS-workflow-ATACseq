@@ -42,6 +42,7 @@ hybrid_atac:
   activate: True
 
   keep_chroms_concat: config/keep_chroms_concat.txt
+  keep_major_chroms_concat: config/keep_major_chroms_concat.txt
 
   # Bowtie2 multimapping behavior for concat alignment
   keep_multimappers: True
